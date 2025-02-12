@@ -9,6 +9,8 @@ https://maps.nlsc.gov.tw/pro/download.jsp
 
 https://tradingeconomics.com/taiwan/consumer-price-index-cpi
 
+https://gis.rchss.sinica.edu.tw/qgis/archives/2823/
+
 Hypothesis:
 1. Only include flood sensors 與縣市政府合建
 2. Only include flood sensors that use CM (detects depth)
