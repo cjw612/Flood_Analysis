@@ -7,7 +7,7 @@ https://maps.nlsc.gov.tw/pro/download.jsp (map shp file)
 
 https://tradingeconomics.com/taiwan/consumer-price-index-cpi (taiwan cpi)
 
-https://gis.rchss.sinica.edu.tw/qgis/archives/2823/ (Transverse Mercator EPSG)
+https://www.ris.gov.tw/info-popudata/app/awFastDownload/file/y0s6-00000.xls/y0s6/00000/ (area of each district)
 
 https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/68467 (10 cm cutoff)
 
