@@ -1,15 +1,15 @@
 # Flood Damage Analysis from 2019 to 2022 in Taiwan
 Analysis of flood data from 2019 - 2022 in Taiwan
 
-https://data.nat.gov.tw/dataset/7441
+https://data.nat.gov.tw/dataset/7441 (sensor dataset)
 
-https://ci.taiwan.gov.tw/dsp/Views/dataset/water.aspx
+https://maps.nlsc.gov.tw/pro/download.jsp (map shp file)
 
-https://maps.nlsc.gov.tw/pro/download.jsp
+https://tradingeconomics.com/taiwan/consumer-price-index-cpi (taiwan cpi)
 
-https://tradingeconomics.com/taiwan/consumer-price-index-cpi
+https://gis.rchss.sinica.edu.tw/qgis/archives/2823/ (Transverse Mercator EPSG)
 
-https://gis.rchss.sinica.edu.tw/qgis/archives/2823/
+https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/68467 (10 cm cutoff)
 
 Hypothesis:
 1. Only include flood sensors 與縣市政府合建
