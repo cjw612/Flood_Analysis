@@ -7,6 +7,7 @@ https://ci.taiwan.gov.tw/dsp/Views/dataset/water.aspx
 
 https://maps.nlsc.gov.tw/pro/download.jsp
 
+https://tradingeconomics.com/taiwan/consumer-price-index-cpi
 
 Hypothesis:
 1. Only include flood sensors 與縣市政府合建
