@@ -5,7 +5,7 @@ https://data.nat.gov.tw/dataset/7441 (sensor dataset)
 
 https://maps.nlsc.gov.tw/pro/download.jsp (map shp file)
 
-https://tradingeconomics.com/taiwan/consumer-price-index-cpi (taiwan cpi)
+https://tradingeconomics.com/euro-area/consumer-price-index-cpi (taiwan cpi)
 
 https://www.ris.gov.tw/info-popudata/app/awFastDownload/file/y0s6-00000.xls/y0s6/00000/ (area of each district)
 
