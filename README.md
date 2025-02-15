@@ -46,6 +46,8 @@ Analysis of flood data from 2019 - 2023 in Taiwan
       | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:11:01.615    | 0.020215 |
       | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:19:31.676    | 0.019876 |
       | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:21:01.238    | 0.018207 |
+     
+     *Sample snapshot of flood record dataset*
 
    - #### Flood Sensors Data: One row per one unique station
      Similarly, only stations that record flood depth in centimeters are recorded into the dataframe. Additionally, only columns *station_id*, *Longitude*, *Latitude*,	and *SIUnit* are read into the dataframe. 18 entries that have abnormal longitude and latitude values are removed after being identified via human inspection of the data. The following table is a snapshot of the first five entries of the flood sensor data, with a total of 1,965 entries after dropping duplicates:
@@ -57,6 +59,8 @@ Analysis of flood data from 2019 - 2023 in Taiwan
       | c7c0c173-be6c-4fd2-b743-921d987e7330     | 120.392550 | 23.483112 | cm     |
       | bc5af470-def9-4712-95da-8cc29c35fd60     | 120.160995 | 23.508854 | cm     |
       | 54c2b021-edc6-418f-bff5-ec96067b24e6     | 120.433920 | 23.441912 | cm     |
+
+     *Sample snapshot of flood sensor dataset*
 
   - #### Geographical Data (SHP file): One row per one unique district (village level)
      
