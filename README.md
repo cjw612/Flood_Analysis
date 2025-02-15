@@ -6,7 +6,10 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
 - ### Project Summary
   - #### Project Overview
-    This project aims to estimate the historical flood losses from 2019 to 2023 in various townships and districts across Taiwan using data collected from flood sensors, coupled with administrative boundaries and flood damage functions to provide a theoretically sound estimate of flood damage. As a result, this project aims to construct a comprehensive list of flood events that happened in Taiwan from 2019 to 2023, in addition to a geographical visualization of the estimated damage of the flood events. The datasets used in this project include flood sensors, flood records, shapefiles for administrative boundaries, and economic indices for estimating financial losses. This project integrates data preprocessing, feature transformation, spatial data processing, and dynamic data visualization.
+    This project estimates the historical flood losses from 2019 to 2023 in various townships and districts across Taiwan using data collected from flood sensors, coupled with administrative boundaries and flood damage functions to provide a theoretically sound estimate of flood damage. The public datasets used in this project include flood sensors, flood records, shapefiles for administrative boundaries, and economic indices for estimating financial losses. This project integrates data preprocessing, feature transformation, spatial data processing, and dynamic data visualization.
+    
+  - #### Project Objective
+    This project aims to construct a comprehensive list of flood events that happened in Taiwan from 2019 to 2023, their corresponding economic damage, in addition to a geographical visualization of the estimated damage of the flood events. 
   
   - #### Tech Stack
     - **Programming Languages:** Python
