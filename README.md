@@ -6,7 +6,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
 - ### Project Summary
   - #### Project Overview
-    This project aims to estimate the historical flood losses from 2019 to 2023 in various townships and districts across Taiwan using data collected from flood sensors, coupled with administrative boundaries and flood damage functions to provide a theoretically sound estimate of flood damage. The dataset includes flood sensor records, shapefiles for administrative boundaries, and economic indices for estimating financial losses. This project integrates data preprocessing, feature transformation, spatial data processing, and dynamic data visualization.
+    This project aims to estimate the historical flood losses from 2019 to 2023 in various townships and districts across Taiwan using data collected from flood sensors, coupled with administrative boundaries and flood damage functions to provide a theoretically sound estimate of flood damage. As a result, this project aims to construct a comprehensive list of flood events that happened in Taiwan from 2019 to 2023, in addition to a geographical visualization of the estimated damage of the flood events. The datasets used in this project include flood sensors, flood records, shapefiles for administrative boundaries, and economic indices for estimating financial losses. This project integrates data preprocessing, feature transformation, spatial data processing, and dynamic data visualization.
   
   - #### Tech Stack
     - **Programming Languages:** Python
@@ -14,15 +14,25 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     - **Visualization:** Matplotlib, Tableau
     - **Development & Tools:** Jupyter Notebook, GIS tools
 
-- ### Data Source
+- ### Data Source and Data Preprocessing
   The dataset used for this analysis is collected from various sources:
-  - **Flood Sensor and Flood Record Data**: Flood sensor and record data is downloaded from the [Civil IoT network](https://history.colife.org.tw/#/)
-  - **Administrative Boundaries and Geographical Information**: The SHP file used as the basis for spatial joining flood and geographical data is downloaded from the [National Land Surveying and Mapping Center](https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=8). The SHP file used in this project corresponds to the TWD97 EPSG:3824 SHP file. 
-  - **Flood Damage Functions**: The methodology used in flood damage calculation is based on the methodology suggested in the [European Commission Joint Research Centre (2017)](https://publications.jrc.ec.europa.eu/repository/handle/JRC105688)
-  - **Economic Data**: Due to the flood damage calculation is in the value of Euros in 2010, to convert it to the value of New Taiwan Dollars (NTD) in 2025, [Eurozone CPI in 2010, 2025](https://tradingeconomics.com/euro-area/consumer-price-index-cpi), and the exchange rate of Euros to NTD when the report is written (34.01) is required to perform the conversion. 
+  - #### Flood Sensor and Flood Record Data:
+    Flood sensor and record data are downloaded from the [Civil IoT network](https://history.colife.org.tw/#/). 
+  - #### Administrative Boundaries and Geographical Information:
+    The SHP file used as the basis for spatial joining flood and geographical data is downloaded from the [National Land Surveying and Mapping Center](https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=8). The SHP file used in this project corresponds to the TWD97 EPSG:3824 SHP file. 
+  - #### Flood Damage Functions:
+    The methodology used in flood damage calculation is based on the methodology suggested in the [European Commission Joint Research Centre (2017)](https://publications.jrc.ec.europa.eu/repository/handle/JRC105688)
+  - #### Economic Data:
+    Due to flood damage calculation based on the value of Euros in 2010, to convert it to the value of New Taiwan Dollars (NTD) in 2025, [Eurozone CPI in 2010, 2025](https://tradingeconomics.com/euro-area/consumer-price-index-cpi), and the exchange rate of Euros to NTD when the report is written (34.01) is required to perform the conversion. 
 
-- ### Data Structure
-  The dataset contains records of flood sensor readings, administrative boundaries, and damage functions. The primary dataset consists of multiple features, including sensor locations, flood depth readings, and timestamps. An overview of the dataset is depicted below:
+- ### Data Structure and Data Preprocessing
+   - #### Flood Record Data
+     Due to the massive amount of raw data, to optimize the reading process, data preprocessing and filtering are performed when reading each entry. Specifically, each entry in the flood record data represents one unique record of one unique flood recording station at a specific time. In addition, not all flood recording stations record in centimeters, some stations record in other units such as dBm or Voltage, which may raise inconsistencies when dealing with mixed units. Therefore, we only record entries that fit the following criteria:
+     1. Has a measurement unit of "cm" (centimeters)
+     2. Records flood depth instead of other vatiables
+     3. Has a record value that is greater than 0
+     Entries that fit the aforementioned criteria would be recorded into the dataframe. However, as not all columns provide information relavant for analyzing flood depth and damage, only columns *station_id* (used to join with the primary key of the sensors table) *timestamp* (records the time of the event) 
+
 
   | sensorID | timestamp           | floodDepth | district       | economicDamage |
   |----------|---------------------|------------|---------------|----------------|
