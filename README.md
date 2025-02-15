@@ -18,7 +18,6 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     - **Development & Tools:** Jupyter Notebook, GIS tools
 
 - ### Data Source and Data Preprocessing
-  The dataset used for this analysis is collected from various sources:
   - #### Flood Sensor and Flood Record Data:
     Flood sensor and record data are downloaded from the [Civil IoT network](https://history.colife.org.tw/#/). 
   - #### Administrative Boundaries and Geographical Information:
@@ -32,7 +31,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
 - ### Data Structure and Data Preprocessing
    - #### Flood Record Data: One row per one unique record of one unique station at a unique time
-     Due to the massive amount of raw data, to optimize the reading process, data preprocessing and filtering are performed when reading each entry. Specifically, each entry in the flood record data represents one unique record of one unique flood recording station at a specific time. In addition, not all flood recording stations record in centimeters, some stations record in other units such as dBm or Voltage, which may raise inconsistencies when dealing with mixed units. Therefore, we only record entries that fit the following criteria:
+     Due to the massive amount of raw data, to optimize the reading process, data preprocessing and filtering are performed when reading each entry. Specifically, each entry in the flood record data represents one unique record of one unique flood recording station at a specific time. In addition, not all flood recording stations record in centimeters, some stations record data in other units such as dBm or Voltage, which may raise inconsistencies when dealing with mixed units. Therefore, we only record entries that fit the following criteria:
      1. Has a measurement unit of "cm" (centimeters)
      2. Records flood depth instead of other variables
      3. Has a record value that is greater than 0
@@ -62,8 +61,22 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
      *Sample snapshot of flood sensor dataset*
 
-  - #### Geographical Data (SHP file): One row per one unique district (village level)
-     
+  - #### Geographical Data (SHP file): Mixed, one row per unique town or row per unique district
+    To aggregate longitude and latitude data into district boundary data, a SHP file recording the geographical boundaries of each district in Taiwan is used. In the context of Taiwan's administrative districts, there are three levels: county-level, town-level, and village-level. In this project, the term "district" is used with the semantics of "county name + town name." The following table is a snapshot of the first five entries of the SHP file, with a total of 7,953 entries with no duplicates:
+
+    | VILLCODE       | COUNTYNAME | TOWNNAME | VILLNAME  | VILLENG         | COUNTYID | COUNTYCODE | TOWNID   | TOWNCODE  | NOTE   | Name                | geometry                                       |
+    |---------------|-----------|---------|-----------|----------------|----------|------------|---------|----------|-------|-------------------|------------------------------------------------|
+    | 10013030S01  | 屏東縣    | 東港鎮  | None      | None           | T        | 10013      | T03     | 10013030 | 未編定村里 | 屏東縣東港鎮       | POLYGON ((120.48059 22.42686, 120.4764 22.4289...) |
+    | 64000130006  | 高雄市    | 林園區  | 中門里    | Zhongmen Vil.  | E        | 64000      | E13     | 64000130 | None  | 高雄市林園區中門里 | POLYGON ((120.36757 22.51419, 120.36775 22.514...) |
+    | 64000130008  | 高雄市    | 林園區  | 港埔里    | Gangpu Vil.    | E        | 64000      | E13     | 64000130 | None  | 高雄市林園區港埔里 | POLYGON ((120.38662 22.50019, 120.38652 22.500...) |
+    | 64000100010  | 高雄市    | 旗津區  | 上竹里    | Shangzhu Vil.  | E        | 64000      | E10     | 64000100 | None  | 高雄市旗津區上竹里 | POLYGON ((120.29827 22.57723, 120.29826 22.577...) |
+    | 09007010006  | 連江縣    | 南竿鄉  | 津沙村    | Jinsha Vil.    | Z        | 09007      | Z01     | 09007010 | None  | 連江縣南竿鄉津沙村 | POLYGON ((119.92143 26.15064, 119.92144 26.150...) |
+
+    *Sample snapshot of SHP file*
+
+  - #### District Area Data: One grain per unique district
+    
+    
 - ### Data Cleaning and Preprocessing
   The dataset is cleaned and preprocessed using the following steps:
   - **Feature Engineering:**
