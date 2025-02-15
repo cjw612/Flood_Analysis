@@ -6,7 +6,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
 - ### Project Summary
   - #### Project Overview
-    This project estimates the historical flood losses from 2019 to 2023 in various townships and districts across Taiwan using data collected from flood sensors, coupled with administrative boundaries and flood damage functions to provide a theoretically sound estimate of flood damage. The public datasets used in this project include flood sensors, flood records, shapefiles for administrative boundaries, and economic indices for estimating financial losses. This project integrates data preprocessing, feature transformation, spatial data processing, and dynamic data visualization.
+    This project estimates the historical flood losses from 2019 to 2023 in various townships and districts across Taiwan using data collected from flood sensors, coupled with administrative boundaries and flood damage functions to provide a theoretically sound estimate of flood damage. The datasets used in this project include flood sensors, flood records, shapefiles for administrative boundaries, areas for each district, and economic indices for estimating financial losses. This project integrates data preprocessing, feature transformation, spatial data processing, and dynamic data visualization.
     
   - #### Project Objective
     This project aims to construct a comprehensive list of flood events that happened in Taiwan from 2019 to 2023, their corresponding economic damage, in addition to a geographical visualization of the estimated damage of the flood events. 
@@ -26,23 +26,40 @@ Analysis of flood data from 2019 - 2023 in Taiwan
   - #### Flood Damage Functions:
     The methodology used in flood damage calculation is based on the methodology suggested in the [European Commission Joint Research Centre (2017)](https://publications.jrc.ec.europa.eu/repository/handle/JRC105688)
   - #### Economic Data:
-    Due to flood damage calculation based on the value of Euros in 2010, to convert it to the value of New Taiwan Dollars (NTD) in 2025, [Eurozone CPI in 2010, 2025](https://tradingeconomics.com/euro-area/consumer-price-index-cpi), and the exchange rate of Euros to NTD when the report is written (34.01) is required to perform the conversion. 
+    Due to flood damage calculation based on the value of Euros in 2010, to convert it to the value of New Taiwan Dollars (NTD) in 2025, [Eurozone CPI in 2010, 2025](https://tradingeconomics.com/euro-area/consumer-price-index-cpi), and the exchange rate of Euros to NTD when the report is written (34.01) is required to perform the conversion.
+  - #### District Area Data
+    Flood damage calculation is based on the area of each flood event, therefore district-level area information is required to correctly derive the flood damage in each district. The data is downloaded from [The Department of Household Registration](https://www.ris.gov.tw/info-popudata/app/awFastDownload/file/y0s6-00000.xls/y0s6/00000/). 
 
 - ### Data Structure and Data Preprocessing
-   - #### Flood Record Data
+   - #### Flood Record Data: One row per one unique record of one unique station at a unique time
      Due to the massive amount of raw data, to optimize the reading process, data preprocessing and filtering are performed when reading each entry. Specifically, each entry in the flood record data represents one unique record of one unique flood recording station at a specific time. In addition, not all flood recording stations record in centimeters, some stations record in other units such as dBm or Voltage, which may raise inconsistencies when dealing with mixed units. Therefore, we only record entries that fit the following criteria:
      1. Has a measurement unit of "cm" (centimeters)
-     2. Records flood depth instead of other vatiables
+     2. Records flood depth instead of other variables
      3. Has a record value that is greater than 0
-     Entries that fit the aforementioned criteria would be recorded into the dataframe. However, as not all columns provide information relavant for analyzing flood depth and damage, only columns *station_id* (used to join with the primary key of the sensors table) *timestamp* (records the time of the event) 
+        
+     Entries that fit the aforementioned criteria would be recorded into the dataframe. However, as not all columns provide information relavant for analyzing flood depth and damage, only columns *station_id* (used to join with the primary key of the sensors table) *timestamp* (records the time of the event), and *value* (the value of each observation, which, after filtering out unused data, would be in centimeters) were fetched from the original dataset. The following table is a snapshot of the first five entries of the flood record data, with a total of 10,721,807 entries after dropping duplicates:
+  
+      | station_id                               | timestamp                  | value    |
+      |------------------------------------------|----------------------------|---------:|
+      | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:00:31.039    | 0.019717 |
+      | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:09:31.974    | 0.020480 |
+      | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:11:01.615    | 0.020215 |
+      | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:19:31.676    | 0.019876 |
+      | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:21:01.238    | 0.018207 |
 
+   - #### Flood Sensors Data: One row per one unique station
+     Similarly, only stations that record flood depth in centimeters are recorded into the dataframe. Additionally, only columns *station_id*, *Longitude*, *Latitude*,	and *SIUnit* are read into the dataframe. 18 entries that have abnormal longitude and latitude values are removed after being identified via human inspection of the data. The following table is a snapshot of the first five entries of the flood sensor data, with a total of 1,965 entries after dropping duplicates:
 
-  | sensorID | timestamp           | floodDepth | district       | economicDamage |
-  |----------|---------------------|------------|---------------|----------------|
-  | 00123    | 2023-06-15 14:00    | 75 cm      | Taipei City   | NT$ 5,000,000  |
-  | 00456    | 2023-07-10 09:30    | 120 cm     | Kaohsiung     | NT$ 10,500,000 |
-  | 00890    | 2023-08-21 16:45    | 40 cm      | Taichung      | NT$ 2,750,000  |
+      | station_id                               | Longitude  | Latitude   | SIUnit |
+      |------------------------------------------|-----------|-----------|--------|
+      | 648c0721-9ae3-4a3b-9007-31dd06a5f293     | 120.241250 | 23.450130 | cm     |
+      | b320d298-d3aa-4954-874a-79696f550efa     | 120.188995 | 23.428696 | cm     |
+      | c7c0c173-be6c-4fd2-b743-921d987e7330     | 120.392550 | 23.483112 | cm     |
+      | bc5af470-def9-4712-95da-8cc29c35fd60     | 120.160995 | 23.508854 | cm     |
+      | 54c2b021-edc6-418f-bff5-ec96067b24e6     | 120.433920 | 23.441912 | cm     |
 
+  - #### Geographical Data (SHP file): One row per one unique district (village level)
+     
 - ### Data Cleaning and Preprocessing
   The dataset is cleaned and preprocessed using the following steps:
   - **Feature Engineering:**
@@ -106,9 +123,6 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
 
 
-https://tradingeconomics.com/euro-area/consumer-price-index-cpi (taiwan cpi)
-
-https://www.ris.gov.tw/info-popudata/app/awFastDownload/file/y0s6-00000.xls/y0s6/00000/ (area of each district)
 
 https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/68467 (10 cm cutoff)
 
