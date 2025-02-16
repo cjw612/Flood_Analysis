@@ -199,7 +199,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     *Sample snapshot of the final dataframe*
 
 - ### Visualization
-  The final dataframe is exported and imported to Tableau to build the dynamic dashboard. The result of the dashboard is presented in the link embeded in the following thumbnail with more actions available such as filtering out different years:
+  The final dataframe is exported and imported to Tableau to build the dynamic dashboard. The result of the dashboard is presented in the link embedded in the following thumbnail with more actions available such as filtering out different years:
 
   [![Dashboard](https://public.tableau.com/static/images/Ta/TaiwanFloodMapVisalization/Dashboard/1.png)](https://public.tableau.com/views/TaiwanFloodMapVisalization/Dashboard)
 
