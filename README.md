@@ -164,13 +164,15 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
     $$D(m) \in [0,1]$$
 
-    MaxDamage is a predetermined parameter in Euros/square meters that changes case by case along with the country and the land usage. In this project, due to not having access to building-level data, the parameter of High Income Contries/Commercial/Land-use Based with a value of 309 is used.\
+    MaxDamage is a predetermined parameter in Euros/square meters that changes case by case along with the country and the land usage. In this project, due to not having access to building-level data, the parameter of High Income Contries/Commercial/Land-use Based with a value of 309 is used.
+
   - #### Estimating Accumulated Damage
-    To estimate the accumulated flood damage in a particular district $d$, we need to calculate the $area_d$ of the district $d$. However, due to the large area of districts, it is unrealistic to assume that each flood event has impact on the entire district. Therefore, the approach used in this project is to still view flood events as village-level events, then dividing the entire area of the district by the factor of the number of villages in the district. Specifically, the four following hypotheses are made in order to estimate the flood damage in each district:
+    To estimate the accumulated flood damage in a particular district $d$, we need to calculate the $area_d$ of the district $d$. However, due to the large area of districts, it is unrealistic to assume that each flood event has an impact on the entire district. Therefore, the approach used in this project is to view flood events as village-level events, then divide the entire district area by the number of villages in the district. Specifically, the four following hypotheses are made in order to estimate the flood damage in each district:
     1. Each flood event reflects a flood event on a village-level
     2. Each flood event is a uniform distribution of flood depth within the corresponding village, and all villages are homogeneous entities
     3. Village area can be proxied by dividing the area of the district by the number of villages in the district
     4. All flood damage is commercial damage\
+       
     Following the aforementioned hypotheses, given a flood event $i$ with a uniform flood depth $m_i$, a village $v$ in district $d$ with area $area_v$ has a flood damage of:
 
     $$Damage_{v, i} = D(m_i) \times 309 \times area_v$$
@@ -183,13 +185,23 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
     $$Damage_d = \sum_{v \in V} \sum_{i \in I} D(m_i) \times 309 \times \mathrm{area}_v$$
 
-    To convert the value of Euros in 2010 to New Taiwan Dollars in 2025, the following conversion based on CPI and exchange rate is applied on the final accumulated damage:
+    To convert the value of Euros in 2010 to New Taiwan Dollars in 2025, the following conversion based on CPI and exchange rate is applied to the final accumulated damage:
 
     $$Damage_{NTD,2025} = Damage_{€,2010} \times \frac{EUCPI_{2025}}{EUCPI_{2010}} \times E_{€,NTD}$$
 
+    As a result, we can obtain the adjusted damage of each flood event in the form of the following dataframe:
+        | District      | Incident ID | Start Time           | End Time             | Min Flood Depth | Max Flood Depth | Avg Flood Depth | Area        | County  | Town   | Village | Geometry | Factor | Estimated Damage | Estimated Damage Adjusted |
+    |--------------|------------|----------------------|----------------------|----------------|----------------|----------------|-------------|---------|--------|---------|----------|--------|------------------|--------------------------|
+    | 嘉義市東區    | 275        | 2022-10-01 09:00:00  | 2022-10-01 10:27:48  | 294.2          | 295.1          | 294.9          | 30155600.0  | 嘉義市   | 東區    | 仁義里   | POLYGON ((120.45899207200011 23.45419898600005...) | 39.0    | 2.087919e+08     | 9.826027e+09               |
+    | 嘉義縣六腳鄉  | 469        | 2020-03-21 20:09:29  | 2020-03-21 20:09:29  | 77.3           | 77.3           | 77.3           | 62261900.0  | 嘉義縣   | 六腳鄉  | 古林村   | POLYGON ((120.28175757500003 23.49113104400004...) | 25.0    | 3.596602e+08     | 1.692609e+10               |
+    | 嘉義縣六腳鄉  | 471        | 2020-04-13 21:26:57  | 2020-04-13 21:26:57  | 75.7           | 75.7           | 75.7           | 62261900.0  | 嘉義縣   | 六腳鄉  | 古林村   | POLYGON ((120.28175757500003 23.49113104400004...) | 25.0    | 3.557201e+08     | 1.674066e+10               |
 
+    *Sample snapshot of the final dataframe*
 
+- ### Visualization
+  The final dataframe is exported and imported to Tableau for building the dashboard  
 
+  <div class='tableauPlaceholder' id='viz1739738786921' style='position: relative'><noscript><a href='#'><img alt='Dashboard ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;TaiwanFloodMapVisalization&#47;Dashboard&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='TaiwanFloodMapVisalization&#47;Dashboard' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;TaiwanFloodMapVisalization&#47;Dashboard&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1739738786921');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='827px';} else { vizElement.style.width='100%';vizElement.style.height='927px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
 
   
 - ### Limitations
