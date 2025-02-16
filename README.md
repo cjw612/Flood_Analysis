@@ -108,16 +108,8 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     DEPTH_THRESHOLD = 50
     DEPTH_OUTLIER = 300
     
-    # Convert timestamp column to datetime format
-    FOR each row in df:
-    Remove milliseconds from 'timestamp'
-    Convert 'timestamp' to pandas datetime format
-    
-    # Sort data by district and timestamp
-    Sort dataframe by ['district', 'timestamp']
-    
     # Identify flood incidents within each district
-    FOR each district:
+    FOR each district in sorted dataframe by ['district', 'timestamp']:
     Compute time difference 'time_diff' between consecutive timestamps
     Mark a new incident if 'time_diff' > TIME_GAP_THRESHOLD and create
     a new Boolean variable 'new_incident'
