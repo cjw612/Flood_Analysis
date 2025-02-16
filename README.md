@@ -205,19 +205,14 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
   *Preview of dashboard* 
 
-- ### Limitations
-  - **Sensor Coverage Bias:** Some regions lack adequate sensor installations, leading to potential underestimations.
-  - **Simplified Damage Estimation:** The model assumes uniform damage intensity per region, which may not reflect real-world variations.
-  - **Exclusion of Other Risk Factors:** Factors such as land use and population density are not fully incorporated.
-
+- ### Limitations and Future Work
+  - **Sensor and Record Information Bias**: In this project, only sensors and records that record units in centimeters are incorporated in the analysis. Excluding sensors that record in other units would rule out potential flood events that are not included in the analysis. In addition, the implicit hypothesis of using flood sensor data to estimate flood damage is that flood sensors are evenly distributed in all villages in Taiwan. However, according to official data, cities such as Taipei only have three flood sensors installed. In contrast, other sensors, such as sewer water level sensors, are used as a proxy variable for flood impact in Taipei. Incorporating a wider array of different sensors could provide the analysis with a more comprehensive data source to identify potential flood events that would be neglected in our current method.
+  - **Flood Event Identification Bias**: In this project, flood events are identified by three criteria at a district level. Our current methodology excludes potential flood events that may be separate in practice but would be aggregated into the same event due to our method not analyzing flood events on a village level. For example, two separate flood events happening at the same time in two distant villages should be identified as two separate events, as opposed to two neighboring villages happening at the same time should be identified as a single event. In addition, the 24-hour and 300-centimeter cutoff could be further refined on a case-by-case basis to reflect the different flood attributes of different geographical locations more accurately. 
+  - **Flood Damage Estimation Bias**: In this project, flood damage is estimated based on multiple hypotheses that do not align with real-world situations. For instance, the current methodology uses the same MaxDamage parameter across all districts, following the assumption that there is no difference in land usage across all districts. This is unrealistic due to the fact that in rural districts, there may be less commercially used land, as opposed to agriculturally used land. Therefore, the current methodology would overestimate the flood damage dealt in rural areas. To refine the current process, additional adjustment variables such as the distribution of different land usages, sewer density, flood duration, and altitude may be incorporated into the calculation to provide a more refined estimation on a finer granularity. 
+  - 
 - ### References
   [1] Water Resources Agency, Taiwan. "Flood Sensor Data." Accessed 2025.  
   [2] European Commission Joint Research Centre. "Global Flood Depth-Damage Functions." 2017.  
   [3] National Land Surveying and Mapping Center, Taiwan. "Administrative Boundary Shapefiles." Accessed 2025.  
 
-https://vocus.cc/article/66a3839dfd89780001ccfee3
 
-Hypothesis:
-1. Only include flood sensors 與縣市政府合建
-2. Only include flood sensors that use CM (detects depth)
-3. An incident is Define an incident cutoff (e.g., if two consecutive records in the same county/district have a time gap >1 hour, they belong to different incidents).
