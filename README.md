@@ -46,7 +46,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
       | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:19:31.676    | 0.019876 |
       | 38505796-1525-4c8b-9d5c-27fea47db00f     | 2022-07-21 00:21:01.238    | 0.018207 |
      
-     *Sample snapshot of flood record dataset*
+     *Snapshot of flood record dataset*
 
    - #### Flood Sensors Data: One row per one unique station
      Similarly, only stations that record flood depth in centimeters are recorded into the dataframe. Additionally, only columns *station_id*, *Longitude*, *Latitude*,	and *SIUnit* are read into the dataframe. 18 entries with abnormal longitude and latitude values are removed after being identified via human inspection of the data. The following table is a snapshot of the first five entries of the flood sensor data, with a total of 1,965 entries after dropping duplicates:
@@ -59,7 +59,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
       | bc5af470-def9-4712-95da-8cc29c35fd60     | 120.160995 | 23.508854 | cm     |
       | 54c2b021-edc6-418f-bff5-ec96067b24e6     | 120.433920 | 23.441912 | cm     |
 
-     *Sample snapshot of flood sensor dataset*
+     *Snapshot of flood sensor dataset*
 
   - #### Geographical Data (SHP file): Mixed, one row per one unique town or row per one unique district
     To aggregate longitude and latitude data into district boundary data, a SHP file recording the geographical boundaries of each district in Taiwan is used. In the context of Taiwan's administrative districts, there are three levels: county-level, town-level, and village-level. In this project, the term "district" is used with the semantics of "county name + town name." The following table is a snapshot of the first three entries of the SHP file, with a total of 7,953 entries with no duplicates:
@@ -70,7 +70,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     | 64000130006  | 高雄市    | 林園區  | 中門里    | Zhongmen Vil.  | E        | 64000      | E13     | 64000130 | None  | 高雄市林園區中門里 | POLYGON ((120.36757 22.51419, 120.36775 22.514...) |
     | 64000130008  | 高雄市    | 林園區  | 港埔里    | Gangpu Vil.    | E        | 64000      | E13     | 64000130 | None  | 高雄市林園區港埔里 | POLYGON ((120.38662 22.50019, 120.38652 22.500...) |
 
-    *Sample snapshot of SHP file*
+    *Snapshot of SHP file*
 
   - #### District Area Data: One grain per one unique district
     To aggregate and calculate flood damage on a district level, area information of each district is required to calculate flood damage. The following table is a snapshot of the first five entries of the area file, with a total of 368 entries.
@@ -83,12 +83,23 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     | 新北市永和區 |  5713800 |
     | 新北市新莊區 | 19738300 |
 
-    *Sample snapshot of the area dataset*
+    *Snapshot of the area dataset*
 
   - #### Data Schema
     As a result, after joining and removing unused columns, we obtain the following data schema:
     ![Schema](/assets/model.png)
     *Graphical Representation of Data Schema*
+
+    The following is a snapshot of the first five rows of the final fact table df, consisting of 7,033,458 entries:
+        | station_id                                | timestamp               | value | Longitude | Latitude | SIUnit |
+    |-------------------------------------------|-------------------------|-------|-----------|----------|--------|
+    | d83ac636-3d28-43fe-96a9-5c33dde8aebe      | 2022-07-21 00:08:57.2   | 0.001 | 120.691   | 23.9032  | cm     |
+    | d83ac636-3d28-43fe-96a9-5c33dde8aebe      | 2022-07-21 00:18:57.382 | 0.001 | 120.691   | 23.9032  | cm     |
+    | d83ac636-3d28-43fe-96a9-5c33dde8aebe      | 2022-07-21 00:28:58.358 | 0.001 | 120.691   | 23.9032  | cm     |
+    | d83ac636-3d28-43fe-96a9-5c33dde8aebe      | 2022-07-21 00:38:58.793 | 0.001 | 120.691   | 23.9032  | cm     |
+    | d83ac636-3d28-43fe-96a9-5c33dde8aebe      | 2022-07-21 00:48:59.713 | 0.001 | 120.691   | 23.9032  | cm     |
+
+    *Snapshot of the final fact table df*
     
 - ### Flood Event Identification
   - #### Thresholds and Definitions
@@ -150,7 +161,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     | 嘉義縣六腳鄉 | 462        | 2020-03-21 20:09:29 | 2020-03-21 20:09:29 | 77.3            | 77.3            | 77.300000       | 62261900  | 嘉義縣  | 六腳鄉 | 古林村 | POLYGON ((120.28176 23.49113, 120.28066 23.491...) | 25     |
     | 嘉義縣六腳鄉 | 464        | 2020-04-13 21:26:57 | 2020-04-13 21:26:57 | 75.7            | 75.7            | 75.700000       | 62261900  | 嘉義縣  | 六腳鄉 | 古林村 | POLYGON ((120.28176 23.49113, 120.28066 23.491...) | 25     |
 
-    *Sample snapshot of the dataframe flood_incidents*
+    *Snapshot of the dataframe flood_incidents*
     
     Note that the feature *factor* is also created in this step, representing the number of villages in the corresponding district. This factor will be used to adjust the flood damage value, which will be introduced in the next section.
 
@@ -196,7 +207,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     | 嘉義縣六腳鄉  | 469        | 2020-03-21 20:09:29  | 2020-03-21 20:09:29  | 77.3           | 77.3           | 77.3           | 62261900.0  | 嘉義縣   | 六腳鄉  | 古林村   | POLYGON ((120.28175757500003 23.49113104400004...) | 25.0    | 3.596602e+08     | 1.692609e+10               |
     | 嘉義縣六腳鄉  | 471        | 2020-04-13 21:26:57  | 2020-04-13 21:26:57  | 75.7           | 75.7           | 75.7           | 62261900.0  | 嘉義縣   | 六腳鄉  | 古林村   | POLYGON ((120.28175757500003 23.49113104400004...) | 25.0    | 3.557201e+08     | 1.674066e+10               |
 
-    *Sample snapshot of the final dataframe*
+    *Snapshot of the final dataframe*
 
 - ### Visualization
   The final dataframe is exported and imported to Tableau to build the dynamic dashboard. The result of the dashboard is presented in the link embedded in the following thumbnail with more actions available such as filtering out different years:
