@@ -164,29 +164,47 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
     $$D(m) \in [0,1]$$
 
-    MaxDamage is a predetermined parameter in Euros/square meters that changes case by case along with the country and the land usage. In this project, due to not having access to building-level data, the parameter of High Income Contries/Commercial/Land-use Based with a value of 309 is used.\
-    - #### Estimating Accumulated Damage
-  
+    MaxDamage is a predetermined parameter in Euros/square meters that changes case by case along with the country and the land usage. In this project, due to not having access to building-level data, the parameter of High Income Contries/Commercial/Land-use Based with a value of 309 is used.
 
-- ### Exploratory Data Analysis
-  The EDA aims to address key questions:
-  - **What are the correlations between variables?**
-    - Constructed a correlation matrix to assess relationships between flood depth, frequency, and economic loss.
-    - Identified unexpected correlations, such as deep floods not always leading to high damage estimates.
-  - **What is the distribution of flood intensities?**
-    - Plotted histograms of flood depth distributions across different townships.
-  - **What are the economic implications of floods?**
-    - Analyzed regional variations in economic damages and identified high-risk districts.
+  - #### Estimating Accumulated Damage
+    To estimate the accumulated flood damage in a particular district $d$, we need to calculate the $area_d$ of the district $d$. However, due to the large area of districts, it is unrealistic to assume that each flood event has an impact on the entire district. Therefore, the approach used in this project is to view flood events as village-level events, then divide the entire district area by the number of villages in the district. Specifically, the four following hypotheses are made in order to estimate the flood damage in each district:
+    1. Each flood event reflects a flood event on a village-level
+    2. Each flood event is a uniform distribution of flood depth within the corresponding village, and all villages are homogeneous entities
+    3. Village area can be proxied by dividing the area of the district by the number of villages in the district
+    4. All flood damage is commercial damage\
+       
+    Following the aforementioned hypotheses, given a flood event $i$ with a uniform flood depth $m_i$, a village $v$ in district $d$ with area $area_v$ has a flood damage of:
 
-- ### Results
-  The key findings are summarized below:
-  
-  | District      | Total Flood Loss (NT$) | Major Flood Events |
-  |--------------|----------------------|----------------|
-  | Taipei City  | NT$ 1,200,000,000    | 5              |
-  | Kaohsiung    | NT$ 800,000,000      | 4              |
-  | Taichung     | NT$ 650,000,000      | 3              |
-  
+    $$Damage_{v, i} = D(m_i) \times 309 \times area_v$$
+
+    In which $area_v$ is:
+
+    $$area_v = \frac{area_d}{n_d}$$
+
+    in which $n_d$ is the number of villages in district $d$. Therefore, to accumulate the flood damage in district $d$, given the set of villages $V$ and the set of flood events $I$ in district $d$, the total accumulated flood damage in district $d$ is:
+
+    $$Damage_d = \sum_{v \in V} \sum_{i \in I} D(m_i) \times 309 \times \mathrm{area}_v$$
+
+    To convert the value of Euros in 2010 to New Taiwan Dollars in 2025, the following conversion based on CPI and exchange rate is applied to the final accumulated damage:
+
+    $$Damage_{NTD,2025} = Damage_{€,2010} \times \frac{EUCPI_{2025}}{EUCPI_{2010}} \times E_{€,NTD}$$
+
+    As a result, we can obtain the adjusted damage of each flood event in the form of the following dataframe:
+        | District      | Incident ID | Start Time           | End Time             | Min Flood Depth | Max Flood Depth | Avg Flood Depth | Area        | County  | Town   | Village | Geometry | Factor | Estimated Damage | Estimated Damage Adjusted |
+    |--------------|------------|----------------------|----------------------|----------------|----------------|----------------|-------------|---------|--------|---------|----------|--------|------------------|--------------------------|
+    | 嘉義市東區    | 275        | 2022-10-01 09:00:00  | 2022-10-01 10:27:48  | 294.2          | 295.1          | 294.9          | 30155600.0  | 嘉義市   | 東區    | 仁義里   | POLYGON ((120.45899207200011 23.45419898600005...) | 39.0    | 2.087919e+08     | 9.826027e+09               |
+    | 嘉義縣六腳鄉  | 469        | 2020-03-21 20:09:29  | 2020-03-21 20:09:29  | 77.3           | 77.3           | 77.3           | 62261900.0  | 嘉義縣   | 六腳鄉  | 古林村   | POLYGON ((120.28175757500003 23.49113104400004...) | 25.0    | 3.596602e+08     | 1.692609e+10               |
+    | 嘉義縣六腳鄉  | 471        | 2020-04-13 21:26:57  | 2020-04-13 21:26:57  | 75.7           | 75.7           | 75.7           | 62261900.0  | 嘉義縣   | 六腳鄉  | 古林村   | POLYGON ((120.28175757500003 23.49113104400004...) | 25.0    | 3.557201e+08     | 1.674066e+10               |
+
+    *Sample snapshot of the final dataframe*
+
+- ### Visualization
+  The final dataframe is exported and imported to Tableau for building the dashboard. The result of the dashboard is in the following link, more actions are available upon clicking the link. 
+
+  [![Dashboard](https://public.tableau.com/static/images/Ta/TaiwanFloodMapVisalization/Dashboard/1.png)](https://public.tableau.com/views/TaiwanFloodMapVisalization/Dashboard)
+
+  *Preview of dashboard* 
+
 - ### Limitations
   - **Sensor Coverage Bias:** Some regions lack adequate sensor installations, leading to potential underestimations.
   - **Simplified Damage Estimation:** The model assumes uniform damage intensity per region, which may not reflect real-world variations.
