@@ -15,7 +15,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     - **Programming Languages:** Python
     - **Libraries & Frameworks:** Pandas, NumPy, Geopandas, Matplotlib
     - **Visualization:** Matplotlib, Tableau
-    - **Development & Tools:** Jupyter Notebook, GIS tools
+    - **Development & Tools:** Jupyter Notebook
 
 - ### Data Source and Data Preprocessing
   - #### Flood Sensor and Flood Record Data:
