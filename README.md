@@ -1,4 +1,4 @@
-# Flood Damage Analysis from 2019 to 2023 in Taiwan
+# 2019 to 2023 Taiwan Flood Damage Estimation
 Analysis of flood data from 2019 - 2023 in Taiwan
 
 ![Flood Map](assets/flood_map.jpg)
@@ -15,7 +15,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     - **Programming Languages:** Python
     - **Libraries & Frameworks:** Pandas, NumPy, Geopandas, Matplotlib
     - **Visualization:** Matplotlib, Tableau
-    - **Development & Tools:** Jupyter Notebook, GIS tools
+    - **Development & Tools:** Jupyter Notebook
 
 - ### Data Source and Data Preprocessing
   - #### Flood Sensor and Flood Record Data:
@@ -32,7 +32,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 - ### Data Structure, Preprocessing, and Schema
    - #### Flood Record Data: One row per one unique record of one unique station at a unique time
      Due to the massive amount of raw data, to optimize the reading process, data preprocessing and filtering are performed when reading each entry. Specifically, each entry in the flood record data represents one unique record of one unique flood recording station at a specific time. In addition, not all flood recording stations record in centimeters, some stations record data in other units such as dBm or Voltage, which may raise inconsistencies when dealing with mixed units. Therefore, we only record entries that fit the following criteria:
-     1. Has a measurement unit of "cm" (centimeters)
+     1. Has a measurement unit of centimeters
      2. Records flood depth instead of other variables
      3. Has a record value that is greater than 0
         
@@ -49,7 +49,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
      *Sample snapshot of flood record dataset*
 
    - #### Flood Sensors Data: One row per one unique station
-     Similarly, only stations that record flood depth in centimeters are recorded into the dataframe. Additionally, only columns *station_id*, *Longitude*, *Latitude*,	and *SIUnit* are read into the dataframe. 18 entries that have abnormal longitude and latitude values are removed after being identified via human inspection of the data. The following table is a snapshot of the first five entries of the flood sensor data, with a total of 1,965 entries after dropping duplicates:
+     Similarly, only stations that record flood depth in centimeters are recorded into the dataframe. Additionally, only columns *station_id*, *Longitude*, *Latitude*,	and *SIUnit* are read into the dataframe. 18 entries with abnormal longitude and latitude values are removed after being identified via human inspection of the data. The following table is a snapshot of the first five entries of the flood sensor data, with a total of 1,965 entries after dropping duplicates:
 
       | station_id                               | Longitude  | Latitude   | SIUnit |
       |------------------------------------------|-----------|-----------|--------|
@@ -87,7 +87,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
   - #### Data Schema
     As a result, after joining and removing unused columns, we obtain the following data schema:
-    ![Schema](/assets/schema.png)
+    ![Schema](/assets/model.png)
     *Graphical Representation of Data Schema*
     
 - ### Flood Event Identification
@@ -97,10 +97,10 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     2. Has a time gap of at least 24 hours between its consecutive closest flood event on a district level
     3. Not exceeding a max flood depth of three meters 
 
-    Flood events that do not meet the first and second criteria will not be identified as a flood event; flood events occuring within 24 hours in the same district would be categorized as the same flood event. The reason that floods are grouped on a district level is that on a village level, flood events occuring in neighboring, small villages would be identified as the same flood event, which may not be accurate in terms of identifying individual flood events in practice. 
+    Flood events that do not meet the first and second criteria will not be identified as flood events; flood events occurring within 24 hours in the same district would be categorized as the same flood event. The reason that floods are grouped on a district level is that on a village level, flood events occuring in neighboring, small villages would be identified as the same flood event, which may not be accurate in terms of identifying individual flood events in practice. 
 
   - #### Processing Pseudocode
-    The following pseudocode is used to sort, identify and label individual flood events from the aforementioned data schema, by which creating a new dataframe flood_incidents:
+    The following pseudocode is used to sort, identify, and label individual flood events from the aforementioned data schema, creating a new dataframe flood_incidents:
 
     ```
     # Define thresholds parameters
@@ -108,16 +108,8 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     DEPTH_THRESHOLD = 50
     DEPTH_OUTLIER = 300
     
-    # Convert timestamp column to datetime format
-    FOR each row in df:
-    Remove milliseconds from 'timestamp'
-    Convert 'timestamp' to pandas datetime format
-    
-    # Sort data by district and timestamp
-    Sort dataframe by ['district', 'timestamp']
-    
     # Identify flood incidents within each district
-    FOR each district:
+    FOR each district in sorted dataframe by ['district', 'timestamp']:
     Compute time difference 'time_diff' between consecutive timestamps
     Mark a new incident if 'time_diff' > TIME_GAP_THRESHOLD and create
     a new Boolean variable 'new_incident'
@@ -133,14 +125,14 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     Convert incident key to a numeric 'incident_id.'
  
     # Aggregate flood data at the incident level
-    FOR each (district, incident_id):
+    FOR each incident:
     Compute:
     - start_time (earliest timestamp)
     - end_time (latest timestamp)
     - min_flood_depth (minimum depth value)
     - max_flood_depth (maximum depth value)
     - avg_flood_depth (average depth value)
-    - district area, county name, town name, village name, geometry, village number factor (of each district)
+    - area, county name, town name, geometry, village number factor (of each district), village name
     
     # Filter out incidents that are outliers or below depth threshold
     REMOVE incidents where:
@@ -162,27 +154,19 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     
     Note that the feature *factor* is also created in this step, representing the number of villages in the corresponding district. This factor will be used to adjust the flood damage value, which will be introduced in the next section.
 
-- ### Mathematical Model
-  The flood loss estimation is based on the following equation:
+- ### Flood Damage Estimation
+  - #### Methodology
+    The methodology applied in this project to estimate flood damage is derived from the Global flood depth-damage functions: Methodology and the database with guidelines by the European Commission[1]. The high-level idea of this methodology is to scale down the MaxDamage value by a fraction, which is determined by a scaling parameter. In practice, this research proposed a generalized approach to estimating flood damage based on the following mathematical relation:
+    
+    $$UnitEstimatedDamage = D(m) \times MaxDamage$$ 
+    
+    Specifically, $D\left(m\right)$ is a function that takes flood depth in meters as an input and outputs a real value that is between 0 and 1. In practice, only nine points on the function are provided in the research, as opposed to the function itself. Therefore, when dealing with values that do not land on the provided points, the interpolate function in numpy is used to derive the function value given the flood depth:
 
-  \[
-  \text{Estimated Damage} = D(m) \times M \times A
-  \]
+    $$D(m) \in [0,1]$$
 
-  Where:
-  - \( D(m) \) is the damage function dependent on flood depth \( m \)
-  - \( M \) is the economic value per unit area
-  - \( A \) is the affected area
-
-  The damage function \( D(m) \) is derived from European Commission data and is calculated using an interpolation of provided data points.
-
-  Additionally, outlier filtering was based on the following condition:
+    MaxDamage is a predetermined parameter in Euros/square meters that changes case by case along with the country and the land usage. In this project, due to not having access to building-level data, the parameter of High Income Contries/Commercial/Land-use Based with a value of 309 is used.\
+    - #### Estimating Accumulated Damage
   
-  \[
-  (\text{goldDiff} \geq 4000 \land \text{blueWin} = 0) \lor (\text{goldDiff} \leq -4000 \land \text{blueWin} = 1)
-  \]
-  
-  where goldDiff represents the gold difference between teams, and blueWin indicates if the blue team won.
 
 - ### Exploratory Data Analysis
   The EDA aims to address key questions:
@@ -213,10 +197,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
   [2] European Commission Joint Research Centre. "Global Flood Depth-Damage Functions." 2017.  
   [3] National Land Surveying and Mapping Center, Taiwan. "Administrative Boundary Shapefiles." Accessed 2025.  
 
-
-
-
-https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/68467 (10 cm cutoff)
+https://vocus.cc/article/66a3839dfd89780001ccfee3
 
 Hypothesis:
 1. Only include flood sensors 與縣市政府合建
