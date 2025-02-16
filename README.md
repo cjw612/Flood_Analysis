@@ -197,10 +197,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
   [2] European Commission Joint Research Centre. "Global Flood Depth-Damage Functions." 2017.  
   [3] National Land Surveying and Mapping Center, Taiwan. "Administrative Boundary Shapefiles." Accessed 2025.  
 
-
-
-
-https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/68467 (10 cm cutoff)
+https://vocus.cc/article/66a3839dfd89780001ccfee3
 
 Hypothesis:
 1. Only include flood sensors 與縣市政府合建
