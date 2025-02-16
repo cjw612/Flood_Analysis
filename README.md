@@ -165,27 +165,32 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     $$D(m) \in [0,1]$$
 
     MaxDamage is a predetermined parameter in Euros/square meters that changes case by case along with the country and the land usage. In this project, due to not having access to building-level data, the parameter of High Income Contries/Commercial/Land-use Based with a value of 309 is used.\
-    - #### Estimating Accumulated Damage
-  
+  - #### Estimating Accumulated Damage
+    To estimate the accumulated flood damage in a particular district $d$, we need to calculate the $area_d$ of the district $d$. However, due to the large area of districts, it is unrealistic to assume that each flood event has impact on the entire district. Therefore, the approach used in this project is to still view flood events as village-level events, then dividing the entire area of the district by the factor of the number of villages in the district. Specifically, the four following hypotheses are made in order to estimate the flood damage in each district:
+    1. Each flood event reflects a flood event on a village-level
+    2. Each flood event is a uniform distribution of flood depth within the corresponding village, and all villages are homogeneous entities
+    3. Village area can be proxied by dividing the area of the district by the number of villages in the district
+    4. All flood damage is commercial damage\
+    Following the aforementioned hypotheses, given a flood event $i$ with a uniform flood depth $m_i$, a village $v$ in district $d$ with area $area_v$ has a flood damage of:
 
-- ### Exploratory Data Analysis
-  The EDA aims to address key questions:
-  - **What are the correlations between variables?**
-    - Constructed a correlation matrix to assess relationships between flood depth, frequency, and economic loss.
-    - Identified unexpected correlations, such as deep floods not always leading to high damage estimates.
-  - **What is the distribution of flood intensities?**
-    - Plotted histograms of flood depth distributions across different townships.
-  - **What are the economic implications of floods?**
-    - Analyzed regional variations in economic damages and identified high-risk districts.
+    $$Damage_{v, i} = D(m_i) \times 309 \times area_v$$
 
-- ### Results
-  The key findings are summarized below:
-  
-  | District      | Total Flood Loss (NT$) | Major Flood Events |
-  |--------------|----------------------|----------------|
-  | Taipei City  | NT$ 1,200,000,000    | 5              |
-  | Kaohsiung    | NT$ 800,000,000      | 4              |
-  | Taichung     | NT$ 650,000,000      | 3              |
+    In which $area_v$ is:
+
+    $$area_v = \frac{area_d}{n_d}$$
+
+    in which $n_d$ is the number of villages in district $d$. Therefore, to accumulate the flood damage in district $d$, given the set of villages $V$ and the set of flood events $I$ in district $d$, the total accumulated flood damage in district $d$ is:
+
+    $$Damage_d = \sum_{v \in V} \sum_{i \in I} D(m_i) \times 309 \times \mathrm{area}_v$$
+
+    To convert the value of Euros in 2010 to New Taiwan Dollars in 2025, the following conversion based on CPI and exchange rate is applied on the final accumulated damage:
+
+    $$Damage_{NTD,2025} = Damage_{€,2010} \times \frac{EUCPI_{2025}}{EUCPI_{2010}} \times E_{€,NTD}$$
+
+
+
+
+
   
 - ### Limitations
   - **Sensor Coverage Bias:** Some regions lack adequate sensor installations, leading to potential underestimations.
