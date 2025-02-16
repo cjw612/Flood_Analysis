@@ -177,7 +177,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
     $$Damage_{v, i} = D(m_i) \times 309 \times area_v$$
 
-    In which $area_v$ is:
+    In which $area_v$ is derived from:
 
     $$area_v = \frac{area_d}{n_d}$$
 
