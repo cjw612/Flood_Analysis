@@ -156,17 +156,16 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
 - ### Flood Damage Estimation
   - #### Methodology
-    The methodology applied in this project to estimate flood damage is derived from the Global flood depth-damage functions: Methodology and the database with guidelines by the European Commission[1]. This research proposed a generalized approach to estimating flood damage based on the following mathematical relation:
+    The methodology applied in this project to estimate flood damage is derived from the Global flood depth-damage functions: Methodology and the database with guidelines by the European Commission[1]. The high-level idea of this methodology is to scale down the MaxDamage value by a fraction, which is determined by a scaling parameter. In practice, this research proposed a generalized approach to estimating flood damage based on the following mathematical relation:
     
-    $$
-    UnitEstimatedDamage=D\left(m\right)\times MaxDamage
-    $$ 
+    $$UnitEstimatedDamage = D(m) \times MaxDamage$$ 
+    
+    Specifically, $D\left(m\right)$ is a function that takes flood depth in meters as an input and outputs a real value that is between 0 and 1. In practice, only nine points on the function are provided in the research, as opposed to the function itself. Therefore, when dealing with values that do not land on the provided points, the interpolate function in numpy is used to derive the function value given the flood depth:
 
-    Specifically, $D\left(m\right)$ is a function that takes flood depth in meters as an input, and outputs a real value that is between $0$ and $1$:
+    $$D(m) \in [0,1]$$
 
-    $$
-    D(m) \in [0,1]
-    $$ 
+    MaxDamage is a predetermined parameter in Euros/square meters that changes case by case along with the country and the land usage. In this project, due to not having access to building-level data, the parameter of High Income Contries/Commercial/Land-use Based with a value of 309 is used.\
+    - #### Estimating Accumulated Damage
   
 
 - ### Exploratory Data Analysis
