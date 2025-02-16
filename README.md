@@ -87,18 +87,80 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
   - #### Data Schema
     As a result, after joining and removing unused columns, we obtain the following data schema:
-    ![Schema](schema.png)
-
+    ![Schema](/assets/schema.png)
+    *Graphical Representation of Data Schema*
     
-- ### Data Cleaning and Preprocessing
-  The dataset is cleaned and preprocessed using the following steps:
-  - **Feature Engineering:**
-    - Derived flood depth differences between sensors and computed overall flood intensity for administrative areas.
-    - Spatially joined sensor data with administrative boundaries to categorize events by district.
-  - **Variable Transformation:**
-    - Transformed categorical indicators such as flood occurrence and administrative zones into binary or categorical variables.
-  - **Outlier Removal:**
-    - Removed extreme values based on domain knowledge, specifically cases where reported flood depth exceeded realistic values.
+- ### Flood Event Identification
+  - #### Thresholds and Definitions
+    In this project, an individual flood event is defined by the following three criteria:
+    1. Has an average flood depth exceeding 50 centimeters
+    2. Has a time gap of at least 24 hours between its consecutive closest flood event on a district level
+    3. Not exceeding a max flood depth of three meters 
+
+    Flood events that do not meet the first and second criteria will not be identified as a flood event; flood events occuring within 24 hours in the same district would be categorized as the same flood event. The reason that floods are grouped on a district level is that on a village level, flood events occuring in neighboring, small villages would be identified as the same flood event, which may not be accurate in terms of identifying individual flood events in practice. 
+
+  - #### Processing Pseudocode
+    The following pseudocode is used to sort, identify and label individual flood events from the aforementioned data schema, by which creating a new dataframe flood_incidents:
+
+    ```
+    # Define thresholds parameters
+    TIME_GAP_THRESHOLD = 24 hours
+    DEPTH_THRESHOLD = 50
+    DEPTH_OUTLIER = 300
+    
+    # Convert timestamp column to datetime format
+    FOR each row in df:
+    Remove milliseconds from 'timestamp'
+    Convert 'timestamp' to pandas datetime format
+    
+    # Sort data by district and timestamp
+    Sort dataframe by ['district', 'timestamp']
+    
+    # Identify flood incidents within each district
+    FOR each district:
+    Compute time difference 'time_diff' between consecutive timestamps
+    Mark a new incident if 'time_diff' > TIME_GAP_THRESHOLD and create
+    a new Boolean variable 'new_incident'
+    
+    # Assign an incident group number within each district
+    FOR each district:
+    Compute cumulative sum of 'new_incident' to create
+    'incident_group'
+    
+    # Generate unique incident_id for each incident
+    FOR each (district, incident_group):
+    Create a unique incident key using [earliest timestamp + district]
+    Convert incident key to a numeric 'incident_id.'
+ 
+    # Aggregate flood data at the incident level
+    FOR each (district, incident_id):
+    Compute:
+    - start_time (earliest timestamp)
+    - end_time (latest timestamp)
+    - min_flood_depth (minimum depth value)
+    - max_flood_depth (maximum depth value)
+    - avg_flood_depth (average depth value)
+    - district area, county name, town name, village name, geometry, village number factor (of each district)
+    
+    # Filter out incidents that are outliers or below depth threshold
+    REMOVE incidents where:
+    max_flood_depth >= DEPTH_OUTLIER
+    OR avg_flood_depth <= DEPTH_THRESHOLD
+    
+    # Return final processed flood incidents dataset
+    ```
+
+    The the following is a snapshot of the first three entries final resulting dataframe:
+
+    | district     | incident_id | start_time          | end_time            | min_flood_depth | max_flood_depth | avg_flood_depth | area      | county  | town  | vil  | geometry | factor |
+    |-------------|------------|---------------------|---------------------|-----------------|-----------------|-----------------|-----------|--------|------|------|----------|--------|
+    | 嘉義市東區  | 268        | 2022-10-01 09:00:00 | 2022-10-01 10:27:48 | 294.2           | 295.1           | 294.900000      | 30155600  | 嘉義市  | 東區 | 仁義里 | POLYGON ((120.45899 23.4542, 120.45889 23.4541...) | 39     |
+    | 嘉義縣六腳鄉 | 462        | 2020-03-21 20:09:29 | 2020-03-21 20:09:29 | 77.3            | 77.3            | 77.300000       | 62261900  | 嘉義縣  | 六腳鄉 | 古林村 | POLYGON ((120.28176 23.49113, 120.28066 23.491...) | 25     |
+    | 嘉義縣六腳鄉 | 464        | 2020-04-13 21:26:57 | 2020-04-13 21:26:57 | 75.7            | 75.7            | 75.700000       | 62261900  | 嘉義縣  | 六腳鄉 | 古林村 | POLYGON ((120.28176 23.49113, 120.28066 23.491...) | 25     |
+
+    *Sample snapshot of the dataframe flood_incidents*
+    
+    Note that the feature *factor* is also created in this step, representing the number of villages in the corresponding district. This factor will be used to adjust the flood damage value, which will be introduced in the next section.
 
 - ### Mathematical Model
   The flood loss estimation is based on the following equation:
