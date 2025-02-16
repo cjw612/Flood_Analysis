@@ -199,11 +199,11 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     *Sample snapshot of the final dataframe*
 
 - ### Visualization
-  The final dataframe is exported and imported to Tableau for building the dashboard. The result of the dashboard is in the following link, more actions are available upon clicking the link. 
+  The final dataframe is exported and imported to Tableau to build the dynamic dashboard. The result of the dashboard is presented in the link embeded in the following thumbnail with more actions available such as filtering out different years:
 
   [![Dashboard](https://public.tableau.com/static/images/Ta/TaiwanFloodMapVisalization/Dashboard/1.png)](https://public.tableau.com/views/TaiwanFloodMapVisalization/Dashboard)
 
-  *Preview of dashboard* 
+  *Preview of dynamic tableau dashboard* 
 
 - ### Limitations and Future Work
   - **Sensor and Record Information Bias**: In this project, only sensors and records that record units in centimeters are incorporated in the analysis. Excluding sensors that record in other units would rule out potential flood events that are not included in the analysis. In addition, the implicit hypothesis of using flood sensor data to estimate flood damage is that flood sensors are evenly distributed in all villages in Taiwan. However, according to official data, cities such as Taipei only have three flood sensors installed. In contrast, other sensors, such as sewer water level sensors, are used as a proxy variable for flood impact in Taipei. Incorporating a wider array of different sensors could provide the analysis with a more comprehensive data source to identify potential flood events that would be neglected in our current method.
