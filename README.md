@@ -87,7 +87,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
 
   - #### Data Schema
     As a result, after joining and removing unused columns, we obtain the following data schema:
-    ![Schema](/assets/schema.png)
+    
     *Graphical Representation of Data Schema*
     
 - ### Flood Event Identification
