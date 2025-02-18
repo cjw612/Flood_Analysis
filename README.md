@@ -153,7 +153,7 @@ Analysis of flood data from 2019 - 2023 in Taiwan
     # Return final processed flood incidents dataset
     ```
 
-    The the following is a snapshot of the first three entries final resulting dataframe:
+    The the following is the first three entries of the final resulting dataframe, which consists of 84 flood events:
 
     | district     | incident_id | start_time          | end_time            | min_flood_depth | max_flood_depth | avg_flood_depth | area      | county  | town  | vil  | geometry | factor |
     |-------------|------------|---------------------|---------------------|-----------------|-----------------|-----------------|-----------|--------|------|------|----------|--------|
