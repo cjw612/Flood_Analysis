@@ -1,5 +1,4 @@
-# 2019 to 2023 Taiwan Flood Damage Estimation
-Analysis of flood data from 2019 - 2023 in Taiwan
+# Estimation and Visualization of Flood Damage in Taiwan from 2019 to 2023
 
 ![Flood Map](assets/flood.png)
 *Snapshot of resulting dashboard*
