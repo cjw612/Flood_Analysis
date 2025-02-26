@@ -181,7 +181,7 @@
     1. Each flood event reflects a flood event on a village-level
     2. Each flood event is a uniform distribution of flood depth within the corresponding village, and all villages are homogeneous entities
     3. Village area can be proxied by dividing the area of the district by the number of villages in the district
-    4. All flood damage is commercial damage\
+    4. All flood damage is commercial damage
        
     Following the aforementioned hypotheses, given a flood event $i$ with a uniform flood depth $m_i$, a village $v$ in district $d$ with area $area_v$ has a flood damage of:
 
