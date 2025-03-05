@@ -71,7 +71,7 @@
 
     *Snapshot of SHP file*
 
-  - #### District Area Data: One grain per one unique district
+  - #### District Area Data: One row per one unique district
     To aggregate and calculate flood damage on a district level, area information of each district is required to calculate flood damage. The following table is a snapshot of the first five entries of the area file, with a total of 368 entries.
 
     | district     | area      |
