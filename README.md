@@ -4,17 +4,13 @@
 *Snapshot of resulting dashboard*
 
 - ### Project Summary
-  - #### Project Overview
-    This project estimates the historical flood losses from 2019 to 2023 in various townships and districts across Taiwan using data collected from flood sensors, coupled with administrative boundaries and flood damage functions to provide a theoretically sound estimate of flood damage. The datasets used in this project include flood sensors, flood records, shapefiles for administrative boundaries, areas for each district, and economic indices for estimating financial losses. This project integrates data preprocessing, feature transformation, spatial data processing, and dynamic data visualization.
-    
-  - #### Project Objective
-    This project aims to construct a comprehensive list of flood events that happened in Taiwan from 2019 to 2023, their corresponding economic damage, in addition to a geographical visualization of the estimated damage of the flood events. 
+  - #### Project Overview and Objective
+    This project is aimed to conceptualize the assurance of Spiritual Powers in a contemporary Taiwanese context with Songshan Ciyou Temple as an example, one of the most culturally and historically significant temples in Taiwan. The results of this project are derived from a mix of qualitative research methods, including but not limited to Content Analysis and Participant Research. It is co-authored with five people under the instruction of Professor Ke-Hsien Huang from the Department of Sociology at National Taiwan University as the final report for the course Qualitative Research Methods. 
   
-  - #### Tech Stack
-    - **Programming Languages:** Python
-    - **Libraries & Frameworks:** Pandas, NumPy, Geopandas, Matplotlib
-    - **Visualization:** Matplotlib, Tableau
-    - **Development & Tools:** Jupyter Notebook
+  - #### Project Snapshot
+    - **Project Scope and Paradigm:** Sociology of Religion
+    - **Research Methods**: Content Analysis, Historical Analysis, Participant Research, Ethnographic Research, Grounded Theory
+    - **Responsibilities**: 10+ hours of on-site participant observation, data coding, conceptualization of the main argument
 
 - ### Data Source and Data Preprocessing
   - #### Flood Sensor and Flood Record Data:
