@@ -166,7 +166,7 @@
     
     $$UnitEstimatedDamage = D(m) \times MaxDamage$$ 
     
-    Specifically, $D\left(m\right)$ is a function that takes flood depth in meters as an input and outputs a real value that is between 0 and 1. In practice, only nine points on the function are provided in the research, as opposed to the function itself. Therefore, when dealing with values that do not land on the provided points, the interpolate function in numpy is used to derive the function value given the flood depth:
+    Specifically,$D\left(m\right)$ is a function that takes flood depth in meters as an input and outputs a real value that is between 0 and 1. In practice, only nine points on the function are provided in the research, as opposed to the function itself. Therefore, when dealing with values that do not land on the provided points, the interpolate function in numpy is used to derive the function value given the flood depth:
 
     $$D(m) \in [0,1]$$
 
