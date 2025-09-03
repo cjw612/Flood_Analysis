@@ -5,7 +5,7 @@
 
 - ### Project Summary
   - #### Project Overview and Objective
-    This project aims to estimate the monetary flood damage in Taiwan on a county level based on a public flood sensor dataset. The methodology underlying this estimation is based on the European Commission Joint Research Centre, which aggregates the original dataset with spatial data corresponding to each flood sensor, mapping it to one specific location. As a result, a dynamic Tableau dashboard has been constructed to visualize the results of this project, which is the flood damage in New Taiwan Dollars for each county in Taiwan. Note that due to the limitations on data collection and the hypotheses made to generate the estimation, limitations on the interpretation of the results are also documented.
+    This project aims to estimate the monetary flood damage in Taiwan from 2019 to 2023 on a county level based on a public flood sensor dataset. The methodology underlying this estimation is based on the European Commission Joint Research Centre, which aggregates the original dataset with spatial data corresponding to each flood sensor, mapping it to one specific location. As a result, a dynamic Tableau dashboard has been constructed to visualize the results of this project, which is the flood damage in New Taiwan Dollars for each county in Taiwan. Note that due to the limitations on data collection and the hypotheses made to generate the estimation, limitations on the interpretation of the results are also documented.
 
   - #### Project Snapshot
     - **Programming Languages**: Python
