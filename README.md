@@ -5,12 +5,13 @@
 
 - ### Project Summary
   - #### Project Overview and Objective
-    This project is aimed to conceptualize the assurance of Spiritual Powers in a contemporary Taiwanese context with Songshan Ciyou Temple as an example, one of the most culturally and historically significant temples in Taiwan. The results of this project are derived from a mix of qualitative research methods, including but not limited to Content Analysis and Participant Research. It is co-authored with five people under the instruction of Professor Ke-Hsien Huang from the Department of Sociology at National Taiwan University as the final report for the course Qualitative Research Methods. 
-  
+    This project aims to estimate the monetary flood damage in Taiwan on a county level based on a public flood sensor dataset. The methodology underlying this estimation is based on the European Commission Joint Research Centre, which aggregates the original dataset with spatial data corresponding to each flood sensor, mapping it to one specific location. As a result, a dynamic Tableau dashboard has been constructed to visualize the results of this project, which is the flood damage in New Taiwan Dollars for each county in Taiwan. Note that due to the limitations on data collection and the hypotheses made to generate the estimation, limitations on the interpretation of the results are also documented.
+
   - #### Project Snapshot
-    - **Project Scope and Paradigm:** Sociology of Religion
-    - **Research Methods**: Content Analysis, Historical Analysis, Participant Research, Ethnographic Research, Grounded Theory
-    - **Responsibilities**: 10+ hours of on-site participant observation, data coding, conceptualization of the main argument
+    - **Programming Languages**: Python
+    - **Libraries & Frameworks**: Pandas, NumPy, GeoPandas, matplotlib
+    - **Visualization**: Tableau
+    - **Development & Tools**: Jupyter Notebook
 
 - ### Data Source and Data Preprocessing
   - #### Flood Sensor and Flood Record Data:
@@ -18,7 +19,7 @@
   - #### Administrative Boundaries and Geographical Information:
     The SHP file used as the basis for spatial joining flood and geographical data is downloaded from the [National Land Surveying and Mapping Center](https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=8). The SHP file used in this project corresponds to the TWD97 EPSG:3824 SHP file. 
   - #### Flood Damage Functions:
-    The methodology used in flood damage calculation is based on the methodology suggested in the [European Commission Joint Research Centre (2017)](https://publications.jrc.ec.europa.eu/repository/handle/JRC105688)
+    The methodology used in flood damage calculation is based on the methodology developed by the [European Commission Joint Research Centre (2017)](https://publications.jrc.ec.europa.eu/repository/handle/JRC105688)
   - #### Economic Data:
     Due to flood damage calculation based on the value of Euros in 2010, to convert it to the value of New Taiwan Dollars (NTD) in 2025, [Eurozone CPI in 2010, 2025](https://tradingeconomics.com/euro-area/consumer-price-index-cpi), and the exchange rate of Euros to NTD when the report is written (34.01) is required to perform the conversion.
   - #### District Area Data
