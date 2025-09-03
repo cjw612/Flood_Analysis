@@ -9,7 +9,7 @@
 
   - #### Project Snapshot
     - **Programming Languages**: Python
-    - **Libraries & Frameworks**: Pandas, NumPy, GeoPandas, matplotlib
+    - **Libraries & Frameworks**: pandas, NumPy, GeoPandas, matplotlib
     - **Visualization**: Tableau
     - **Development & Tools**: Jupyter Notebook
 
